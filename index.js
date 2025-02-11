@@ -34,9 +34,10 @@ app.get('/events', async (req, res) => {
       "info": "No upcoming events found."
     }
     if(eventsFetched){
-      const now = new Date().toISOString();
-      const futureEvents = eventsFetched.filter(event => event.start.dateTime > now);
+      const now = new Date();
+      const futureEvents = eventsFetched.filter(event => new Date(event.start.dateTime) > now);
       if(futureEvents.length){
+        futureEvents.sort((a, b) => new Date(a.start.dateTime) - new Date(b.start.dateTime));
         events = futureEvents
       }
     }
