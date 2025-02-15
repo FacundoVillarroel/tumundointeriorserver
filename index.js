@@ -28,11 +28,7 @@ app.get('/events', async (req, res) => {
       `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}`
     );
     const eventsFetched = response.data.items
-    let events = {
-      "error": 1,
-      "code": 200,
-      "info": "No upcoming events found."
-    }
+    let events = []
     if(eventsFetched){
       const now = new Date();
       const futureEvents = eventsFetched.filter(event => new Date(event.start.dateTime) > now);
