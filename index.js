@@ -25,8 +25,9 @@ app.use((req, res, next) => {
 app.get('/events', async (req, res) => {
   try {
     console.log("requested /events");
+    const now = new Date().toISOString();
     const response = await axios.get(
-      `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}`
+      `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}&timeMin=${now}&singleEvents=true&orderBy=startTime`
     );
     const eventsFetched = response.data.items;
     let events = [];
