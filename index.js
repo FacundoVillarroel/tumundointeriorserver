@@ -24,19 +24,26 @@ app.use((req, res, next) => {
 
 app.get('/events', async (req, res) => {
   try {
+    console.log("requested /events");
     const response = await axios.get(
       `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?key=${API_KEY}`
     );
-    const eventsFetched = response.data.items
-    let events = []
-    if(eventsFetched){
+    const eventsFetched = response.data.items;
+    let events = [];
+    if (eventsFetched) {
       const now = new Date();
-      const futureEvents = eventsFetched.filter(event => new Date(event.start.dateTime) > now);
-      if(futureEvents.length){
-        futureEvents.sort((a, b) => new Date(a.start.dateTime) - new Date(b.start.dateTime));
-        events = futureEvents
+      const futureEvents = eventsFetched.filter(
+        (event) => new Date(event.start.dateTime) > now
+      );
+      if (futureEvents.length) {
+        futureEvents.sort(
+          (a, b) => new Date(a.start.dateTime) - new Date(b.start.dateTime)
+        );
+        events = futureEvents;
       }
     }
+    console.log("Events fetched:", JSON.stringify(events, null, 2));
+    
     res.json(events);
   } catch (error) {
     console.error('Error al obtener eventos:', error);
